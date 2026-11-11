@@ -1,10 +1,10 @@
 # Nibbly homepage
 
-Landing page and privacy policy for the Nibbly game. The site is static HTML, CSS, and JavaScript, using artwork and copy from the game project.
+Landing page, Terms of Service, and privacy policy for the Nibbly game. The site is static HTML, CSS, and JavaScript, using artwork and copy from the game project.
 
 ## Build
 
-Run `node build.mjs`. This copies the homepage into `dist/` and generates `dist/privacy.html` from `privacy.json`. The game images are in `dist/assets/`.
+Run `node build.mjs`. This copies the homepage and `terms.html` into `dist/` and generates `dist/privacy.html` from `privacy.json`. The game images are in `dist/assets/`.
 
 ## Vercel
 
