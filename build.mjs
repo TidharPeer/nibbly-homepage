@@ -1,0 +1,18 @@
+import { readFileSync, writeFileSync, copyFileSync, mkdirSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+const root = resolve(import.meta.dirname);
+const dist = resolve(root, 'dist');
+mkdirSync(dist, { recursive: true });
+for (const file of ['index.html', 'styles.css', 'script.js']) copyFileSync(resolve(root, file), resolve(dist, file));
+
+const policy = JSON.parse(readFileSync(resolve(root, 'privacy.json'), 'utf8'));
+const escape = value => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+const linked = value => escape(value)
+  .replaceAll('https://policies.google.com/privacy', '<a href="https://policies.google.com/privacy">Google Privacy Policy</a>')
+  .replaceAll('https://www.revenuecat.com/privacy', '<a href="https://www.revenuecat.com/privacy">RevenueCat Privacy Policy</a>')
+  .replaceAll('tidhar.peer@gmail.com', '<a href="mailto:tidhar.peer@gmail.com">tidhar.peer@gmail.com</a>');
+const sections = policy.sections.map((section, index) => `<section id="section-${index + 1}"><h2>${escape(section.heading)}</h2>${section.paragraphs.map(p => `<p>${linked(p)}</p>`).join('')}</section>`).join('\n');
+const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f8f7ed"><meta name="description" content="Nibbly privacy policy: how game progress, optional purchases, and support messages are handled."><link rel="icon" href="assets/icon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="privacy.css"><title>Nibbly Privacy Policy</title></head><body><a class="skip-link" href="#main">Skip to content</a><header class="site-header"><a class="brand" href="index.html" aria-label="Nibbly home"><img src="assets/icon.png" alt="" width="40" height="40"><span>nibbly<span class="brand-dot">.</span></span></a><nav aria-label="Main navigation"><a href="index.html#game">The game</a><a href="index.html#worlds">Explore</a><a href="index.html#contact">Contact</a></nav><a class="header-cta" href="index.html">Back to home <span aria-hidden="true">↗</span></a></header><main id="main"><div class="policy-hero"><div class="policy-hero-inner"><p class="eyebrow"><span class="eyebrow-line"></span> The details, made clear</p><h1>Privacy <em>policy.</em></h1><p>How Nibbly handles game progress, optional purchases, and the messages you choose to send.</p><span class="updated">Updated ${escape(policy.updated)}</span></div><span class="policy-star" aria-hidden="true">✳</span></div><div class="policy-layout"><aside><div class="policy-index"><strong>On this page</strong>${policy.sections.map((s,i)=>`<a href="#section-${i+1}">${escape(s.heading)}</a>`).join('')}</div></aside><article class="policy-content">${sections}</article></div></main><footer><div class="footer-main"><a class="brand" href="index.html"><img src="assets/icon.png" alt="" width="40" height="40"><span>nibbly<span class="brand-dot">.</span></span></a><p>Little bites. Big adventures.</p><div class="footer-links"><a href="index.html">Home</a><a href="mailto:tidhar.peer@gmail.com?subject=Nibbly%20privacy">Privacy questions</a></div></div><div class="footer-bottom"><span>© 2026 Nibbly. All rights reserved.</span><span>Made for curious minds and little adventurers.</span></div></footer></body></html>`;
+writeFileSync(resolve(dist, 'privacy.html'), html);
+copyFileSync(resolve(root, 'privacy.css'), resolve(dist, 'privacy.css'));
