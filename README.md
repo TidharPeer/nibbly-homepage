@@ -10,4 +10,4 @@ Run `node build.mjs`. This copies the homepage and `terms.html` into `dist/` and
 
 Import this repository into Vercel with the repository root as the project root. `vercel.json` sets the build command and `dist` output directory. No environment variables or package installation are required.
 
-The Google Play button is a coming-soon placeholder. Add the store URL to `index.html` after release. Review `privacy.json` against the released game's data practices before making the site public or using the policy URL in a store listing.
+The App Store and Google Play areas are coming-soon placeholders. Add the store URLs to `index.html` after release. Review `privacy.json` and `terms.html` against the released game's data practices and purchase setup before using their URLs in store listings.

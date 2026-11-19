@@ -9,6 +9,7 @@ for (const file of ['index.html', 'styles.css', 'script.js', 'terms.html', 'priv
 const policy = JSON.parse(readFileSync(resolve(root, 'privacy.json'), 'utf8'));
 const escape = value => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
 const linked = value => escape(value)
+  .replaceAll('https://www.apple.com/legal/privacy/data/en/app-store/', '<a href="https://www.apple.com/legal/privacy/data/en/app-store/">Apple App Store &amp; Privacy</a>')
   .replaceAll('https://policies.google.com/privacy', '<a href="https://policies.google.com/privacy">Google Privacy Policy</a>')
   .replaceAll('https://www.revenuecat.com/privacy', '<a href="https://www.revenuecat.com/privacy">RevenueCat Privacy Policy</a>')
   .replaceAll('tidhar.peer@gmail.com', '<a href="mailto:tidhar.peer@gmail.com">tidhar.peer@gmail.com</a>');
